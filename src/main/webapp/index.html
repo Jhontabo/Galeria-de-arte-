@@ -1,10 +1,79 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Arte</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #3e5151, #decba4);
+            color: #fff;
+            text-align: center;
+        }
+        .header {
+            background-color: #3e5151;
+            padding: 20px 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #decba4;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+        }
+        .card {
+            background: #fff;
+            color: #3e5151;
+            border-radius: 10px;
+            width: 200px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .card a {
+            text-decoration: none;
+            color: #3e5151;
+        }
+        .footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #3e5151;
+            color: #decba4;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Bienvenidos a la Galería de Arte</h1>
+    </div>
+    <div class="container">
+        <div class="card"><a href="obras">Obras de Arte</a></div>
+        <div class="card"><a href="profesionales">Profesionales del Arte</a></div>
+        <div class="card"><a href="exposiciones">Exposiciones</a></div>
+        <div class="card"><a href="coleccionistas">Coleccionistas</a></div>
+        <div class="card"><a href="ventas">Ventas</a></div>
+        <div class="card"><a href="colecciones">Colecciones</a></div>
+    </div>
+    <div class="footer">
+        &copy; 2024 Galería de Arte. Todos los derechos reservados.
+    </div>
+</body>
 </html>

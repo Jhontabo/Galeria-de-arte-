@@ -4,14 +4,18 @@ import com.galeria.models.Coleccion;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
-@WebServlet("/colecciones") // URL para acceder al servlet
+
+@WebServlet(name = "colecciones", urlPatterns = {"/colecciones"})
 public class ColeccionesServlet extends HttpServlet {
+
     private List<Coleccion> colecciones; // Lista para simular una base de datos
 
     @Override
@@ -25,9 +29,8 @@ public class ColeccionesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Mostrar lista de colecciones
-        request.setAttribute("colecciones", colecciones);
-        request.getRequestDispatcher("/colecciones.jsp").forward(request, response);
+        request.setAttribute("colecciones", colecciones); // Envía la lista de colecciones a la vista
+        request.getRequestDispatcher("/colecciones.jsp").forward(request, response); // Redirige a la JSP
     }
 
     @Override
