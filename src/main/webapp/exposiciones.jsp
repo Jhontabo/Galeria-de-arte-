@@ -1,9 +1,25 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
 <head>
     <title>Exposiciones</title>
+    <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
+
+    <nav class="navbar">
+        <h2 class="logo">Galería de Arte</h2>
+        <ul>
+            <li><a href="index.html" class="active">Inicio</a></li>
+            <li><a href="obras">Obras de Arte</a></li>
+            <li><a href="profesionales">Profesionales</a></li>
+            <li><a href="exposiciones">Exposiciones</a></li>
+            <li><a href="coleccionistas">Coleccionistas</a></li>
+            <li><a href="ventas">Ventas</a></li>
+            <li><a href="colecciones">Colecciones</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+    </nav>
     <h1>Lista de Exposiciones</h1>
     <table border="1">
         <tr>
@@ -59,4 +75,5 @@
         <button type="submit">Agregar Exposición</button>
     </form>
 </body>
+
 </html>
