@@ -172,3 +172,18 @@ body {
 .btn-submit:hover {
     background-color: var(--accent-color);
 }
+
+/* Footer */
+footer {
+    background: var(--primary-color);
+    padding: 2rem;
+    text-align: center;
+    margin-top: auto;
+}
+
+.footer-bottom {
+    color: var(--text-light);
+    opacity: 0.9;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}

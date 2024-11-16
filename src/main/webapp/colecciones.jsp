@@ -146,6 +146,7 @@
             <p>&copy; 2024 Galería de Arte. Oscar Tajumbina.</p>
         </div>
     </footer>
+
 </body>
 
 </html>
