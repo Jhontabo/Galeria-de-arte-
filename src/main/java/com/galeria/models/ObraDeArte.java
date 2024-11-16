@@ -16,7 +16,8 @@ public class ObraDeArte {
     public ObraDeArte() {}
 
     // Constructor con parámetros
-    public ObraDeArte(int id, String titulo, String artista, int anioCreacion, String tecnica, String dimensiones, String estado, double precio, String observaciones, String imagen) {
+    public ObraDeArte(int id, String titulo, String artista, int anioCreacion, String tecnica,
+                      String dimensiones, String estado, double precio, String observaciones, String imagen) {
         this.id = id;
         this.titulo = titulo;
         this.artista = artista;
@@ -29,7 +30,7 @@ public class ObraDeArte {
         this.imagen = imagen;
     }
 
-    // Getters y Setters
+    // Getters y setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
