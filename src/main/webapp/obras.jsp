@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obras de Arte</title>
-    <link rel="stylesheet" href="css/obras.css">
+    <link rel="stylesheet" href="css/tablas.css">
+
 </head>
 
 <body>
@@ -26,6 +27,7 @@
     </nav>
 
     <!-- Contenido Principal -->
+
     <div class="content">
         <!-- Tabla de Obras -->
         <h1 class="page-title">Lista de Obras de Arte</h1>
@@ -128,6 +130,12 @@
         </form>
 
     </div>
+
+    <footer>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Galería de Arte. Oscar Tajumbina.</p>
+            </div>
+    </footer>
 
 </body>
 

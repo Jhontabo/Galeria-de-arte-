@@ -1,100 +1,151 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <!DOCTYPE html>
-    <html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 
-    <head>
-        <title>Colecciones</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="css/index.css">
+<head>
+    <title>Colecciones - Galería de Arte</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/tablas.css">
 
-    </head>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
 
-    <body>
-        <div class="container">
+<body>
 
-            <nav class="navbar">
-                <h2 class="logo">Galeria de Arte</h2>
-                <ul>
-                    <li><a href="index.html" class="active">Inicio</a></li>
-                    <li><a href="obras">Obras de Arte</a></li>
-                    <li><a href="profesionales">Profesionales</a></li>
-                    <li><a href="exposiciones">Exposiciones</a></li>
-                    <li><a href="coleccionistas">Coleccionistas</a></li>
-                    <li><a href="ventas">Ventas</a></li>
-                    <li><a href="colecciones">Colecciones</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                </ul>
-            </nav>
-            <header>
-                <h1>Lista de Colecciones</h1>
-            </header>
+    <nav class="navbar">
+        <h2 class="logo">Galería de Arte</h2>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="obras">Obras de Arte</a></li>
+            <li><a href="profesionales">Profesionales</a></li>
+            <li><a href="exposiciones">Exposiciones</a></li>
+            <li><a href="coleccionistas">Coleccionistas</a></li>
+            <li><a href="ventas">Ventas</a></li>
+            <li><a href="colecciones" class="active">Colecciones</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+    </nav>
 
-            <table class="styled-table">
-                <thead>
+    <div class="content">
+        <h1 class="page-title">Lista de colecciones</h1>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Responsable</th>
+                    <th>Estilo</th>
+                    <th>Obras Incluidas</th>
+                    <th>Fechas de Exhibición</th>
+                    <th>Sala Asignada</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="coleccion" items="${colecciones}">
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Responsable</th>
-                        <th>Estilo</th>
-                        <th>Obras Incluidas</th>
-                        <th>Fechas de Exhibicion</th>
-                        <th>Sala Asignada</th>
-                        <th>Observaciones</th>
+                        <td>${coleccion.id}</td>
+                        <td>${coleccion.nombre}</td>
+                        <td>${coleccion.descripcion}</td>
+                        <td>${coleccion.responsable}</td>
+                        <td>${coleccion.estilo}</td>
+                        <td>
+                            <c:forEach var="obra" items="${coleccion.obrasIncluidas}">
+                                ${obra},
+                            </c:forEach>
+                        </td>
+                        <td>${coleccion.fechasExhibicion}</td>
+                        <td>${coleccion.salaAsignada}</td>
+                        <td>${coleccion.observaciones}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="coleccion" items="${colecciones}">
-                        <tr>
-                            <td>${coleccion.id}</td>
-                            <td>${coleccion.nombre}</td>
-                            <td>${coleccion.descripcion}</td>
-                            <td>${coleccion.responsable}</td>
-                            <td>${coleccion.estilo}</td>
-                            <td>
-                                <c:forEach var="obra" items="${coleccion.obrasIncluidas}">
-                                    ${obra},
-                                </c:forEach>
-                            </td>
-                            <td>${coleccion.fechasExhibicion}</td>
-                            <td>${coleccion.salaAsignada}</td>
-                            <td>${coleccion.observaciones}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+                </c:forEach>
+            </tbody>
+        </table>
 
-            <section class="form-section">
-                <h2>Agregar una Nueva Coleccion</h2>
-                <form action="colecciones" method="post" class="styled-form">
+        <h2 class="form-title">Agregar colecciones</h2>
+
+        <form action="colecciones" method="post" class="styled-form">
+
+            <div class="form-row">
+                <div class="form-group">
                     <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required><br>
+                    <input type="text" id="nombre" name="nombre" required>
 
-                    <label for="descripcion">Descripcion:</label>
-                    <textarea id="descripcion" name="descripcion" required></textarea><br>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required></textarea>
+
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group">
 
                     <label for="responsable">Responsable:</label>
-                    <input type="text" id="responsable" name="responsable"><br>
+                    <input type="text" id="responsable" name="responsable">
+
+                </div>
+
+                <div class="form-group">
 
                     <label for="estilo">Estilo:</label>
-                    <input type="text" id="estilo" name="estilo"><br>
+                    <input type="text" id="estilo" name="estilo">
 
-                    <label for="fechasExhibicion">Fechas de Exhibicion:</label>
-                    <input type="text" id="fechasExhibicion" name="fechasExhibicion"><br>
+                </div>
+                <div class="form-group">
+                    <label for="fechasExhibicion">Fechas de Exhibición:</label>
+                    <input type="text" id="fechasExhibicion" name="fechasExhibicion">
 
+
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
                     <label for="salaAsignada">Sala Asignada:</label>
-                    <input type="text" id="salaAsignada" name="salaAsignada"><br>
+                    <input type="text" id="salaAsignada" name="salaAsignada">
 
-                    <label for="observaciones">Observaciones:</label>
-                    <textarea id="observaciones" name="observaciones"></textarea><br>
+                </div>
+                <div class="form-group">
 
                     <label for="imagen">Imagen:</label>
-                    <input type="text" id="imagen" name="imagen"><br>
+                    <input type="text" id="imagen" name="imagen">
 
-                    <button type="submit" class="btn-submit">Agregar Coleccion</button>
-                </form>
-            </section>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="observaciones">Observaciones:</label>
+                <textarea id="observaciones" name="observaciones"></textarea>
+
+            </div>
+
+            <button type="submit" class="btn-submit">Agregar Colección</button>
+        </form>
+    </div>
+
+
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Galería de Arte. Oscar Tajumbina.</p>
         </div>
-    </body>
+    </footer>
+</body>
 
-    </html>
+</html>
