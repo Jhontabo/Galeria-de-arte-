@@ -33,6 +33,15 @@ public class ObrasServlet extends HttpServlet {
     }
 
     @Override
+    public void init() throws ServletException {
+        super.init();
+        // Datos iniciales para pruebas
+        obras.add(new ObraDeArte(nextId++, "Mona Lisa", "Leonardo da Vinci", 1503, "Óleo sobre tabla", "77 cm × 53 cm", "Exhibición", 780000000, "Obra famosa del Renacimiento", "mona-lisa.jpg"));
+        obras.add(new ObraDeArte(nextId++, "La noche estrellada", "Vincent van Gogh", 1889, "Óleo sobre lienzo", "73.7 cm × 92.1 cm", "Exhibición", 110000000, "Inspirada en el sanatorio de Saint-Rémy", "noche-estrellada.jpg"));
+        obras.add(new ObraDeArte(nextId++, "El grito", "Edvard Munch", 1893, "Óleo, temple y pastel sobre cartón", "91 cm × 73.5 cm", "Exhibición", 120000000, "Expresión del modernismo", "el-grito.jpg"));
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("obras", obras);
         req.getRequestDispatcher("/obras.jsp").forward(req, resp);

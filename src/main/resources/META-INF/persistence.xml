@@ -3,7 +3,7 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="my_persistence_unit">
     <class>com.galeria.models.ObraDeArte</class>
-    <class>com.galeria.models.ProfesionalArte</class>
+    <class>com.galeria.models.Profesional</class>
     <class>com.galeria.models.Exposicion</class>
     <class>com.galeria.models.Coleccionista</class>
     <class>com.galeria.models.Venta</class>

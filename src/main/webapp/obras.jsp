@@ -16,8 +16,8 @@
                 <nav class="navbar">
                     <h2 class="logo">Galería de Arte</h2>
                     <ul>
-                        <li><a href="index.html" class="active">Inicio</a></li>
-                        <li><a href="obras">Obras de Arte</a></li>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="obras" class="active">Obras de Arte</a></li>
                         <li><a href="profesionales">Profesionales</a></li>
                         <li><a href="exposiciones">Exposiciones</a></li>
                         <li><a href="coleccionistas">Coleccionistas</a></li>

@@ -1,56 +1,85 @@
 package com.galeria.servlets;
 
 import com.galeria.models.Exposicion;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-@WebServlet("/exposiciones") // URL para acceder al servlet
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+
+@WebServlet("/exposiciones")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2 MB
+        maxFileSize = 1024 * 1024 * 10,      // 10 MB
+        maxRequestSize = 1024 * 1024 * 50    // 50 MB
+)
 public class ExposicionesServlet extends HttpServlet {
-    private List<Exposicion> exposiciones; // Lista para simular una base de datos
+    private static final List<Exposicion> exposiciones = new ArrayList<>();
+    private static int nextId = 1; // Generador de ID simple
+    private static final String RUTA_IMAGENES = "resources/imagenes/exposiciones";
 
-    @Override
-    public void init() throws ServletException {
-        // Inicializar datos de ejemplo
-        exposiciones = new ArrayList<>();
-        exposiciones.add(new Exposicion(1, "Renaissance Art", "2024-01-01", "2024-06-30", "John Doe", "Renacimiento Europeo", List.of(1, 2), "Sala A", "Exposición sobre arte renacentista", "renaissance.jpg"));
-        exposiciones.add(new Exposicion(2, "Modern Art", "2024-07-01", "2024-12-31", "Jane Smith", "Arte Moderno", List.of(3, 4), "Sala B", "Exposición de arte moderno y contemporáneo", "modern.jpg"));
+    public static List<Exposicion> getExposiciones() {
+        return exposiciones;
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Mostrar lista de exposiciones
-        request.setAttribute("exposiciones", exposiciones);
-        request.getRequestDispatcher("/exposiciones.jsp").forward(request, response);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("exposiciones", exposiciones);
+        req.getRequestDispatcher("/exposiciones.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Agregar una nueva exposición desde un formulario
-        int id = exposiciones.size() + 1; // Generar un ID único
-        String titulo = request.getParameter("titulo");
-        String fechaInicio = request.getParameter("fechaInicio");
-        String fechaFin = request.getParameter("fechaFin");
-        String responsable = request.getParameter("responsable");
-        String tematica = request.getParameter("tematica");
-        String salaAsignada = request.getParameter("salaAsignada");
-        String descripcion = request.getParameter("descripcion");
-        String imagen = request.getParameter("imagen");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
 
-        // Crear una nueva exposición
-        Exposicion nuevaExposicion = new Exposicion(id, titulo, fechaInicio, fechaFin, responsable, tematica, new ArrayList<>(), salaAsignada, descripcion, imagen);
-        exposiciones.add(nuevaExposicion);
+        if ("delete".equals(action)) {
+            // Manejo de eliminación
+            int id = Integer.parseInt(req.getParameter("id"));
+            exposiciones.removeIf(expo -> expo.getId() == id);
+            resp.sendRedirect("exposiciones");
+        } else {
+            // Agregar una nueva exposición
+            String titulo = req.getParameter("titulo");
+            String fechaInicio = req.getParameter("fechaInicio");
+            String fechaFin = req.getParameter("fechaFin");
+            String responsable = req.getParameter("responsable");
+            String tematica = req.getParameter("tematica");
+            String salaAsignada = req.getParameter("salaAsignada");
+            String descripcion = req.getParameter("descripcion");
 
-        // Redirigir al listado
-        response.sendRedirect("exposiciones");
+            // Manejo de imagen
+            Part imagenPart = req.getPart("imagen");
+            String nombreImagen = null;
+            if (imagenPart != null && imagenPart.getSize() > 0) {
+                nombreImagen = Paths.get(imagenPart.getSubmittedFileName()).getFileName().toString();
+                String rutaReal = req.getServletContext().getRealPath("/") + RUTA_IMAGENES;
+                File carpetaImagenes = new File(rutaReal);
+
+                if (!carpetaImagenes.exists()) {
+                    carpetaImagenes.mkdirs(); // Crear la carpeta si no existe
+                }
+
+                File archivoImagen = new File(carpetaImagenes, nombreImagen);
+                try (InputStream input = imagenPart.getInputStream()) {
+                    Files.copy(input, archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+
+            Exposicion nuevaExposicion = new Exposicion(nextId++, titulo, fechaInicio, fechaFin, responsable,
+                    tematica, salaAsignada, descripcion, nombreImagen);
+            exposiciones.add(nuevaExposicion);
+            resp.sendRedirect("exposiciones");
+        }
     }
 }

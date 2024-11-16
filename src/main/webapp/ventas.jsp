@@ -12,12 +12,12 @@
         <nav class="navbar">
             <h2 class="logo">Galería de Arte</h2>
             <ul>
-                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="index.html">Inicio</a></li>
                 <li><a href="obras">Obras de Arte</a></li>
                 <li><a href="profesionales">Profesionales</a></li>
                 <li><a href="exposiciones">Exposiciones</a></li>
                 <li><a href="coleccionistas">Coleccionistas</a></li>
-                <li><a href="ventas">Ventas</a></li>
+                <li><a href="ventas" class="active">Ventas</a></li>
                 <li><a href="colecciones">Colecciones</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
             </ul>
