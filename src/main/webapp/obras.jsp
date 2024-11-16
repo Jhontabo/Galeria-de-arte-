@@ -106,13 +106,13 @@
                                 <th>Precio</th>
                                 <th>Observaciones</th>
                                 <th>Imagen</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% List<ObraDeArte> obras = (List<ObraDeArte>) request.getAttribute("obras");
                                     if (obras != null) {
-                                    for (ObraDeArte obra : obras) {
-                                    %>
+                                    for (ObraDeArte obra : obras) { %>
                                     <tr>
                                         <td>
                                             <%= obra.getId() %>
@@ -137,15 +137,30 @@
                                         </td>
                                         <td>$<%= obra.getPrecio() %>
                                         </td>
+                                        <td>
+                                            <%= obra.getObservaciones() %>
+                                        </td>
                                         <td><img src="resources/imagenes/obras/<%= obra.getImagen() %>"
                                                 alt="<%= obra.getTitulo() %>" width="50"></td>
                                         <td>
-                                            <%= obra.getObservaciones() %>
+                                            <!-- Botón de editar -->
+                                            <form action="editarObra" method="get" style="display:inline;">
+                                                <input type="hidden" name="id" value="<%= obra.getId() %>">
+                                                <button type="submit" class="btn-edit">Editar</button>
+                                            </form>
+                                            <!-- Botón de eliminar -->
+                                            <form action="obras" method="post" style="display:inline;">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="id" value="<%= obra.getId() %>">
+                                                <button type="submit" class="btn-delete"
+                                                    onclick="return confirm('¿Está seguro de eliminar esta obra?');">Eliminar</button>
+                                            </form>
+
                                         </td>
                                     </tr>
                                     <% } } else { %>
                                         <tr>
-                                            <td colspan="10">No hay obras registradas.</td>
+                                            <td colspan="11">No hay obras registradas.</td>
                                         </tr>
                                         <% } %>
                         </tbody>
