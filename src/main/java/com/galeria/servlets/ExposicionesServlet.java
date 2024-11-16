@@ -34,6 +34,20 @@ public class ExposicionesServlet extends HttpServlet {
     }
 
     @Override
+    public void init() throws ServletException {
+        super.init();
+
+        // Agregar datos por defecto
+        exposiciones.add(new Exposicion(nextId++, "Arte Moderno", "2024-01-15", "2024-03-15",
+                "Luis Fernández", "Arte Contemporáneo", "Sala A",
+                "Exposición dedicada al arte moderno con obras destacadas de artistas nacionales.", null));
+
+        exposiciones.add(new Exposicion(nextId++, "Renacimiento Italiano", "2024-04-01", "2024-06-01",
+                "Sofía García", "Pintura Renacentista", "Sala B",
+                "Una colección única de obras del Renacimiento italiano.", null));
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("exposiciones", exposiciones);
         req.getRequestDispatcher("/exposiciones.jsp").forward(req, resp);

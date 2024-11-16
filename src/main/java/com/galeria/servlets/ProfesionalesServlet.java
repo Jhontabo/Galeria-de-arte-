@@ -35,6 +35,20 @@ public class ProfesionalesServlet extends HttpServlet {
     }
 
     @Override
+    public void init() throws ServletException {
+        super.init();
+
+        // Agregar datos por defecto
+        profesionales.add(new Profesional(nextId++, "Carlos Martínez", "Restaurador", 10,
+                "Restauración de cuadros renacentistas", "carlos.martinez@gmail.com",
+                "Universidad de Bellas Artes", "Premio Nacional de Restauración", "Clásico", null));
+
+        profesionales.add(new Profesional(nextId++, "Ana López", "Curadora", 5,
+                "Curaduría de arte moderno", "ana.lopez@gmail.com",
+                "Instituto de Arte Moderno", "Premio Joven Curadora", "Contemporáneo", null));
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("profesionales", profesionales);
 
