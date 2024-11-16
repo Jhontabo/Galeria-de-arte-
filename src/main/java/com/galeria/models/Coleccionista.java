@@ -6,7 +6,6 @@ public class Coleccionista {
     private String fechaInicioMembresia;
     private String tipoMembresia; // Básica o Avanzada
     private String preferencias; // Ejemplo: horarios, exposiciones favoritas
-    private String historialCompras; // Lista en texto (puede convertirse a un objeto si es necesario)
     private double descuentos; // Porcentaje de descuento aplicado
     private boolean suscripciones; // Sí o No
     private boolean renovacionAutomatica; // Sí o No
@@ -16,13 +15,12 @@ public class Coleccionista {
     public Coleccionista() {}
 
     // Constructor con parámetros
-    public Coleccionista(int id, String nombre, String fechaInicioMembresia, String tipoMembresia, String preferencias, String historialCompras, double descuentos, boolean suscripciones, boolean renovacionAutomatica, String imagen) {
+    public Coleccionista(int id, String nombre, String fechaInicioMembresia, String tipoMembresia, String preferencias, double descuentos, boolean suscripciones, boolean renovacionAutomatica, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.fechaInicioMembresia = fechaInicioMembresia;
         this.tipoMembresia = tipoMembresia;
         this.preferencias = preferencias;
-        this.historialCompras = historialCompras;
         this.descuentos = descuentos;
         this.suscripciones = suscripciones;
         this.renovacionAutomatica = renovacionAutomatica;
@@ -44,9 +42,6 @@ public class Coleccionista {
 
     public String getPreferencias() { return preferencias; }
     public void setPreferencias(String preferencias) { this.preferencias = preferencias; }
-
-    public String getHistorialCompras() { return historialCompras; }
-    public void setHistorialCompras(String historialCompras) { this.historialCompras = historialCompras; }
 
     public double getDescuentos() { return descuentos; }
     public void setDescuentos(double descuentos) { this.descuentos = descuentos; }
