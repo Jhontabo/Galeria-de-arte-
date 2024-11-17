@@ -1,0 +1,86 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.galeria.models.Coleccion" %>
+<%@ page import="com.galeria.models.ObraDeArte" %>
+<%@ page import="java.util.List" %>
+
+<%
+    Coleccion coleccion = (Coleccion) request.getAttribute("coleccion");
+    List<ObraDeArte> obras = (List<ObraDeArte>) request.getAttribute("obras");
+%>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Colección</title>
+    <link rel="stylesheet" href="css/tablas.css">
+</head>
+<body>
+    <h1>Editar Colección</h1>
+    <form action="editarColeccion" method="post" enctype="multipart/form-data" class="styled-form">
+        <input type="hidden" name="id" value="<%= coleccion.getId() %>">
+
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="<%= coleccion.getNombre() %>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" required><%= coleccion.getDescripcion() %></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="responsable">Responsable:</label>
+            <input type="text" id="responsable" name="responsable" value="<%= coleccion.getResponsable() %>">
+        </div>
+
+        <div class="form-group">
+            <label for="estilo">Estilo:</label>
+            <input type="text" id="estilo" name="estilo" value="<%= coleccion.getEstilo() %>">
+        </div>
+
+        <div class="form-group">
+            <label for="obrasIncluidas">Obras Incluidas:</label>
+            <select id="obrasIncluidas" name="obrasIncluidas" multiple>
+                <% for (ObraDeArte obra : obras) { %>
+                    <option value="<%= obra.getId() %>" <%= coleccion.getObrasIncluidas().contains(obra.getId()) ? "selected" : "" %>>
+                        <%= obra.getTitulo() %>
+                    </option>
+                <% } %>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fechasExhibicion">Fechas de Exhibición:</label>
+            <input type="date" id="fechasExhibicion" name="fechasExhibicion" value="<%= coleccion.getFechasExhibicion() %>">
+        </div>
+
+        <div class="form-group">
+            <label for="salaAsignada">Sala Asignada:</label>
+            <input type="text" id="salaAsignada" name="salaAsignada" value="<%= coleccion.getSalaAsignada() %>">
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones:</label>
+            <textarea id="observaciones" name="observaciones"><%= coleccion.getObservaciones() %></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="imagen">Actualizar Imagen:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <label>Imagen Actual:</label>
+            <% if (coleccion.getImagen() != null && !coleccion.getImagen().isEmpty()) { %>
+                <img src="resources/imagenes/<%= coleccion.getImagen() %>" alt="Imagen de la colección" width="100">
+            <% } else { %>
+                <p>No hay imagen disponible.</p>
+            <% } %>
+        </div>
+
+        <button type="submit" class="btn-submit">Actualizar Colección</button>
+    </form>
+</body>
+</html>

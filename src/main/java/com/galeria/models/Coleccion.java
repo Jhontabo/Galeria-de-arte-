@@ -6,12 +6,12 @@ public class Coleccion {
     private int id;
     private String nombre;
     private String descripcion;
-    private String responsable; // Persona a cargo de la colección
-    private String estilo; // Estilo artístico (abstracto, realismo, etc.)
-    private List<Integer> obrasIncluidas; // IDs de las obras que pertenecen a la colección
-    private String fechasExhibicion; // Puede ser "Permanente" o un rango de fechas
-    private String salaAsignada; // Sala donde se encuentra la colección
-    private String observaciones; // Comentarios adicionales sobre la colección
+    private String responsable;
+    private String estilo;
+    private List<Integer> obrasIncluidas; // Lista de IDs de las obras incluidas
+    private String fechasExhibicion;
+    private String salaAsignada;
+    private String observaciones;
     private String imagen;
 
     // Constructor vacío
@@ -59,6 +59,11 @@ public class Coleccion {
     public String getObservaciones() { return observaciones; }
     public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
 
-    public String getImagen() { return imagen; }
-    public void setImagen(String imagen) { this.imagen = imagen; }
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 }

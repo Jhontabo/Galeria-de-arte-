@@ -1,43 +1,73 @@
 package com.galeria.servlets;
 
 import com.galeria.models.Coleccion;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.galeria.models.ObraDeArte;
+
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-@WebServlet(name = "colecciones", urlPatterns = {"/colecciones"})
+@WebServlet("/colecciones")
+@MultipartConfig
 public class ColeccionesServlet extends HttpServlet {
 
-    private List<Coleccion> colecciones; // Lista para simular una base de datos
+    private List<Coleccion> colecciones;
+    private List<ObraDeArte> obras;
 
     @Override
     public void init() throws ServletException {
-        // Inicializar datos de ejemplo
+        obras = new ArrayList<>();
+        obras.add(new ObraDeArte(1, "Mona Lisa", "Leonardo da Vinci", 1503, "Óleo", "77x53 cm", "Conservada", 1000000, "Famosa obra", "monalisa.jpg"));
+        obras.add(new ObraDeArte(2, "La noche estrellada", "Vincent van Gogh", 1889, "Óleo", "73x92 cm", "Conservada", 2000000, "Obra maestra", "noche.jpg"));
+
         colecciones = new ArrayList<>();
-        colecciones.add(new Coleccion(1, "Impresionismo", "Colección de obras impresionistas", "Luis Ortega", "Impresionismo", List.of(1, 2), "Permanente", "Sala A", "Conservada en ambiente controlado", "impresionismo.jpg"));
-        colecciones.add(new Coleccion(2, "Arte Contemporáneo", "Colección de arte moderno y contemporáneo", "Ana Gómez", "Contemporáneo", List.of(3, 4), "2024-01-01 - 2024-12-31", "Sala B", "Exhibición temporal", "contemporaneo.jpg"));
+        colecciones.add(new Coleccion(1, "Renacimiento", "Obras renacentistas", "Luis Martínez", "Clásico", Arrays.asList(1), "2024-01-01 a 2024-03-01", "Sala 1", "Exhibición principal", "imagen.jpg"));
+
+        getServletContext().setAttribute("colecciones", colecciones);
+        getServletContext().setAttribute("obras", obras);
     }
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("colecciones", colecciones); // Envía la lista de colecciones a la vista
-        request.getRequestDispatcher("/colecciones.jsp").forward(request, response); // Redirige a la JSP
+        request.setAttribute("colecciones", colecciones);
+        request.setAttribute("obras", obras);
+        request.getRequestDispatcher("/colecciones.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Agregar una nueva colección desde un formulario
-        int id = colecciones.size() + 1; // Generar un ID único
+        String action = request.getParameter("action");
+
+        if ("delete".equals(action)) {
+            handleDelete(request, response);
+        } else {
+            handleAdd(request, response);
+        }
+    }
+
+    private void handleDelete(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        colecciones.removeIf(coleccion -> coleccion.getId() == id);
+        response.sendRedirect("colecciones");
+    }
+
+    private void handleAdd(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        int id = colecciones.size() + 1;
         String nombre = request.getParameter("nombre");
         String descripcion = request.getParameter("descripcion");
         String responsable = request.getParameter("responsable");
@@ -47,11 +77,31 @@ public class ColeccionesServlet extends HttpServlet {
         String observaciones = request.getParameter("observaciones");
         String imagen = request.getParameter("imagen");
 
-        // Crear una nueva colección
-        Coleccion nuevaColeccion = new Coleccion(id, nombre, descripcion, responsable, estilo, new ArrayList<>(), fechasExhibicion, salaAsignada, observaciones, imagen);
+        // Procesar la imagen
+        Part imagenPart = request.getPart("imagen");
+        String imagenNombre = null;
+        if (imagenPart != null && imagenPart.getSize() > 0) {
+            String uploadsDir = getServletContext().getRealPath("") + File.separator + "resources" + File.separator + "imagenes";
+            File uploads = new File(uploadsDir);
+            if (!uploads.exists()) {
+                uploads.mkdirs();
+            }
+            imagenNombre = "coleccion_" + id + "_" + imagenPart.getSubmittedFileName();
+            imagenPart.write(uploadsDir + File.separator + imagenNombre);
+        }
+
+        // Convertir los IDs de las obras incluidas a una lista
+        String[] obrasIds = request.getParameterValues("obrasIncluidas");
+        List<Integer> obrasIncluidas = new ArrayList<>();
+        if (obrasIds != null) {
+            for (String obraId : obrasIds) {
+                obrasIncluidas.add(Integer.parseInt(obraId));
+            }
+        }
+
+        Coleccion nuevaColeccion = new Coleccion(id, nombre, descripcion, responsable, estilo, obrasIncluidas, fechasExhibicion, salaAsignada, observaciones,imagen);
         colecciones.add(nuevaColeccion);
 
-        // Redirigir al listado
         response.sendRedirect("colecciones");
     }
 }
