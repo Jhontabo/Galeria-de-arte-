@@ -75,18 +75,25 @@ public class ColeccionesServlet extends HttpServlet {
         String fechasExhibicion = request.getParameter("fechasExhibicion");
         String salaAsignada = request.getParameter("salaAsignada");
         String observaciones = request.getParameter("observaciones");
-        String imagen = request.getParameter("imagen");
 
         // Procesar la imagen
         Part imagenPart = request.getPart("imagen");
         String imagenNombre = null;
         if (imagenPart != null && imagenPart.getSize() > 0) {
-            String uploadsDir = getServletContext().getRealPath("") + File.separator + "resources" + File.separator + "imagenes";
+            // Definir el directorio específico para las imágenes de colecciones
+            String uploadsDir = getServletContext().getRealPath("") + File.separator + "resources"
+                    + File.separator + "imagenes" + File.separator + "colecciones";
+
+            // Crear la carpeta si no existe
             File uploads = new File(uploadsDir);
             if (!uploads.exists()) {
                 uploads.mkdirs();
             }
+
+            // Generar un nombre único para la imagen
             imagenNombre = "coleccion_" + id + "_" + imagenPart.getSubmittedFileName();
+
+            // Guardar la imagen en el directorio destino
             imagenPart.write(uploadsDir + File.separator + imagenNombre);
         }
 
@@ -99,9 +106,24 @@ public class ColeccionesServlet extends HttpServlet {
             }
         }
 
-        Coleccion nuevaColeccion = new Coleccion(id, nombre, descripcion, responsable, estilo, obrasIncluidas, fechasExhibicion, salaAsignada, observaciones,imagen);
+        // Crear y añadir la nueva colección
+        Coleccion nuevaColeccion = new Coleccion(
+                id,
+                nombre,
+                descripcion,
+                responsable,
+                estilo,
+                obrasIncluidas,
+                fechasExhibicion,
+                salaAsignada,
+                observaciones,
+                imagenNombre // Guardar solo el nombre del archivo
+        );
+
         colecciones.add(nuevaColeccion);
 
+        // Redirigir al listado de colecciones
         response.sendRedirect("colecciones");
     }
+
 }
