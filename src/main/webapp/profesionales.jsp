@@ -85,7 +85,7 @@
                                                 <input type="hidden" name="id" value="<%= profesional.getId() %>">
                                                 <button type="submit" class="btn-edit">Editar</button>
                                             </form>
-                                            <form action="profesionales" method="post" style="display:inline;">
+                                            <form action="eliminarProfesional" method="get" style="display:inline;">
                                                 <input type="hidden" name="action" value="delete">
                                                 <input type="hidden" name="id" value="<%= profesional.getId() %>">
                                                 <button type="submit" class="btn-delete"
