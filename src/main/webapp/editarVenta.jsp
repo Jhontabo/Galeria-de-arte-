@@ -1,11 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.galeria.models.Venta" %>
-<%@ page import="com.galeria.models.ObraDeArte" %>
-<%@ page import="com.galeria.models.Coleccionista" %>
-<%@ page import="java.util.List" %>
-
+<%@ page import="java.util.List, com.galeria.models.Venta, com.galeria.models.ObraDeArte, com.galeria.models.Coleccionista" %>
 <%
-    // Obtener datos del servlet
     Venta venta = (Venta) request.getAttribute("venta");
     List<ObraDeArte> obras = (List<ObraDeArte>) request.getAttribute("obras");
     List<Coleccionista> clientes = (List<Coleccionista>) request.getAttribute("clientes");
@@ -14,25 +9,107 @@
         throw new IllegalStateException("Datos necesarios para la edición no disponibles.");
     }
 %>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Venta</title>
-    <link rel="stylesheet" href="css/tablas.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f4f8;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin: 0 10px 10px 0;
+        }
+
+        button {
+            grid-column: span 2;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Editar Venta</h1>
-    <form action="editarVenta" method="post" enctype="multipart/form-data" class="styled-form">
-        <!-- Campo oculto para enviar el ID de la venta -->
+    <form action="editarVenta" method="post">
         <input type="hidden" name="id" value="<%= venta.getId() %>">
 
-        <!-- Selección de la obra vendida -->
-        <div class="form-group">
-            <label for="idObra">Obra Vendida:</label>
-            <select id="idObra" name="idObra" required>
+        <div>
+            <label for="idObra">Obra:</label>
+            <select id="idObra" name="idObra">
                 <% for (ObraDeArte obra : obras) { %>
                     <option value="<%= obra.getId() %>" <%= obra.getId() == venta.getIdObra() ? "selected" : "" %>>
                         <%= obra.getTitulo() %>
@@ -41,10 +118,9 @@
             </select>
         </div>
 
-        <!-- Selección del cliente -->
-        <div class="form-group">
+        <div>
             <label for="idCliente">Cliente:</label>
-            <select id="idCliente" name="idCliente" required>
+            <select id="idCliente" name="idCliente">
                 <% for (Coleccionista cliente : clientes) { %>
                     <option value="<%= cliente.getId() %>" <%= cliente.getId() == venta.getIdCliente() ? "selected" : "" %>>
                         <%= cliente.getNombre() %>
@@ -53,26 +129,22 @@
             </select>
         </div>
 
-        <!-- Precio de la venta -->
-        <div class="form-group">
-            <label for="precioVenta">Precio Venta:</label>
-            <input type="number" id="precioVenta" name="precioVenta" step="0.01" value="<%= venta.getPrecioVenta() %>" required>
+        <div>
+            <label for="precioVenta">Precio de Venta:</label>
+            <input type="number" id="precioVenta" name="precioVenta" value="<%= venta.getPrecioVenta() %>" step="0.01" required>
         </div>
 
-        <!-- Fecha de la venta -->
-        <div class="form-group">
+        <div>
             <label for="fechaVenta">Fecha de Venta:</label>
             <input type="date" id="fechaVenta" name="fechaVenta" value="<%= venta.getFechaVenta() %>" required>
         </div>
 
-        <!-- Encargado de la venta -->
-        <div class="form-group">
-            <label for="encargadoVenta">Encargado:</label>
+        <div>
+            <label for="encargadoVenta">Encargado de Venta:</label>
             <input type="text" id="encargadoVenta" name="encargadoVenta" value="<%= venta.getEncargadoVenta() %>" required>
         </div>
 
-        <!-- Método de pago -->
-        <div class="form-group">
+        <div>
             <label for="metodoPago">Método de Pago:</label>
             <select id="metodoPago" name="metodoPago">
                 <option value="Efectivo" <%= "Efectivo".equals(venta.getMetodoPago()) ? "selected" : "" %>>Efectivo</option>
@@ -81,36 +153,17 @@
             </select>
         </div>
 
-        <!-- Factura generada -->
-        <div class="form-group">
+        <div>
             <label for="facturaGenerada">Factura Generada:</label>
             <input type="checkbox" id="facturaGenerada" name="facturaGenerada" <%= venta.isFacturaGenerada() ? "checked" : "" %>>
         </div>
 
-        <!-- Observaciones -->
-        <div class="form-group">
+        <div>
             <label for="observaciones">Observaciones:</label>
             <textarea id="observaciones" name="observaciones"><%= venta.getObservaciones() %></textarea>
         </div>
 
-        <!-- Imagen actual -->
-        <div class="form-group">
-            <label>Imagen actual:</label>
-            <% if (venta.getImagen() != null && !venta.getImagen().isEmpty()) { %>
-                <img src="resources/imagenes/ventas/<%= venta.getImagen() %>" alt="Imagen de la venta" width="100">
-            <% } else { %>
-                <p>No hay imagen disponible.</p>
-            <% } %>
-        </div>
-
-        <!-- Campo para cargar nueva imagen -->
-        <div class="form-group">
-            <label for="imagen">Actualizar Imagen:</label>
-            <input type="file" id="imagen" name="imagen" accept="image/*">
-        </div>
-
-        <!-- Botón de envío -->
-        <button type="submit" class="btn-submit">Actualizar Venta</button>
+        <button type="submit">Actualizar Venta</button>
     </form>
 </body>
 </html>

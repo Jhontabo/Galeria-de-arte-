@@ -114,7 +114,7 @@
                                                                                 <button type="submit"
                                                                                     class="btn-edit">Editar</button>
                                                                             </form>
-                                                                            <form action="ventas" method="post"
+                                                                            <form action="eliminarVenta" method="get"
                                                                                 style="display:inline;">
                                                                                 <input type="hidden" name="action"
                                                                                     value="delete">

@@ -14,100 +14,71 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet("/editarColeccion")
-@MultipartConfig // Habilita multipart/form-data
+@MultipartConfig
 public class EditarColeccionServlet extends HttpServlet {
-
-    private List<Coleccion> colecciones;
-    private List<ObraDeArte> obras;
-
     @Override
-    public void init() throws ServletException {
-        colecciones = (List<Coleccion>) getServletContext().getAttribute("colecciones");
-        obras = (List<ObraDeArte>) getServletContext().getAttribute("obras");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Coleccion> colecciones = (List<Coleccion>) getServletContext().getAttribute("colecciones");
+        List<ObraDeArte> obras = (List<ObraDeArte>) getServletContext().getAttribute("obras");
 
-        if (colecciones == null || obras == null) {
-            throw new ServletException("Datos no inicializados.");
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-
+        int id = Integer.parseInt(req.getParameter("id"));
         Coleccion coleccion = colecciones.stream()
                 .filter(c -> c.getId() == id)
                 .findFirst()
                 .orElse(null);
 
         if (coleccion == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Colección no encontrada.");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Colección no encontrada.");
             return;
         }
 
-        request.setAttribute("coleccion", coleccion);
-        request.setAttribute("obras", obras);
-        request.getRequestDispatcher("/editarColeccion.jsp").forward(request, response);
+        req.setAttribute("coleccion", coleccion);
+        req.setAttribute("obras", obras);
+        req.getRequestDispatcher("/editarColeccion.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Coleccion> colecciones = (List<Coleccion>) getServletContext().getAttribute("colecciones");
 
+        int id = Integer.parseInt(req.getParameter("id"));
         Coleccion coleccion = colecciones.stream()
                 .filter(c -> c.getId() == id)
                 .findFirst()
                 .orElse(null);
 
         if (coleccion == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Colección no encontrada.");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Colección no encontrada.");
             return;
         }
 
-        // Actualizar los datos de la colección
-        coleccion.setNombre(request.getParameter("nombre"));
-        coleccion.setDescripcion(request.getParameter("descripcion"));
-        coleccion.setResponsable(request.getParameter("responsable"));
-        coleccion.setEstilo(request.getParameter("estilo"));
-        coleccion.setFechasExhibicion(request.getParameter("fechasExhibicion"));
-        coleccion.setSalaAsignada(request.getParameter("salaAsignada"));
-        coleccion.setObservaciones(request.getParameter("observaciones"));
+        // Actualizar datos de la colección
+        coleccion.setNombre(req.getParameter("nombre"));
+        coleccion.setDescripcion(req.getParameter("descripcion"));
+        coleccion.setResponsable(req.getParameter("responsable"));
+        coleccion.setEstilo(req.getParameter("estilo"));
+        coleccion.setFechasExhibicion(req.getParameter("fechasExhibicion"));
+        coleccion.setSalaAsignada(req.getParameter("salaAsignada"));
+        coleccion.setObservaciones(req.getParameter("observaciones"));
 
-        // Obtener las obras seleccionadas
-        String[] obrasIds = request.getParameterValues("obrasIncluidas");
-        if (obrasIds != null) {
-            List<Integer> obrasIncluidas = List.of(obrasIds).stream()
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-            coleccion.setObrasIncluidas(obrasIncluidas);
-        }
-
-        // Manejar el archivo de imagen
-        Part imagenPart = request.getPart("imagen");
+        // Procesar la imagen
+        Part imagenPart = req.getPart("imagen");
         if (imagenPart != null && imagenPart.getSize() > 0) {
-            String nombreArchivo = imagenPart.getSubmittedFileName();
-            String carpetaDestino = getServletContext().getRealPath("/resources/imagenes/colecciones");
+            String uploadsDir = getServletContext().getRealPath("") + File.separator + "resources"
+                    + File.separator + "imagenes" + File.separator + "colecciones";
 
-            // Validar que la carpeta existe o crearla
-            File carpeta = new File(carpetaDestino);
-            if (!carpeta.exists()) {
-                carpeta.mkdirs(); // Crea la carpeta y subcarpetas si no existen
+            File uploads = new File(uploadsDir);
+            if (!uploads.exists()) {
+                uploads.mkdirs();
             }
 
-            String rutaDestino = carpetaDestino + File.separator + nombreArchivo;
-
-            // Guardar el archivo en la ruta destino
-            imagenPart.write(rutaDestino);
-
-            // Actualizar la referencia a la imagen en el objeto
-            coleccion.setImagen(nombreArchivo);
+            String imagenNombre = "coleccion_" + id + "_" + imagenPart.getSubmittedFileName();
+            imagenPart.write(uploadsDir + File.separator + imagenNombre);
+            coleccion.setImagen(imagenNombre); // Actualizar imagen
         }
 
-        response.sendRedirect("colecciones");
+        resp.sendRedirect("colecciones");
     }
-
 }

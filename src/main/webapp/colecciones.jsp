@@ -83,11 +83,11 @@
                     <td><%= coleccion.getSalaAsignada() %></td>
                     <td><%= coleccion.getObservaciones() %></td>
                     <td>
-                        <form action="editarColeccion" method="get" style="display:inline;">
+                        <form action="editarColeccion" method="get" enctype="multipart/form-data" style="display:inline;">
                             <input type="hidden" name="id" value="<%= coleccion.getId() %>">
                             <button type="submit" class="btn-edit">Editar</button>
                         </form>
-                        <form action="colecciones" method="post" style="display:inline;">
+                        <form action="eliminarColeccion" method="get" style="display:inline;">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<%= coleccion.getId() %>">
                             <button type="submit" class="btn-delete" onclick="return confirm('¿Eliminar esta colección?');">Eliminar</button>
