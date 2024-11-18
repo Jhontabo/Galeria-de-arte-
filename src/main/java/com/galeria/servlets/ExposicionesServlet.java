@@ -26,7 +26,7 @@ import java.util.List;
 )
 public class ExposicionesServlet extends HttpServlet {
     private static final List<Exposicion> exposiciones = new ArrayList<>();
-    private static int nextId = 1; // Generador de ID simple
+    private static int nextId = 1;
     private static final String RUTA_IMAGENES = "resources/imagenes/exposiciones";
 
     public static List<Exposicion> getExposiciones() {
@@ -35,16 +35,15 @@ public class ExposicionesServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        super.init();
+        if (exposiciones.isEmpty()) {
+            exposiciones.add(new Exposicion(nextId++, "Arte Moderno", "2024-01-15", "2024-03-15",
+                    "Luis Fernández", "Arte Contemporáneo", "Sala A",
+                    "Exposición dedicada al arte moderno con obras destacadas de artistas nacionales.", "arte-moderno.jpg"));
 
-        // Agregar datos por defecto
-        exposiciones.add(new Exposicion(nextId++, "Arte Moderno", "2024-01-15", "2024-03-15",
-                "Luis Fernández", "Arte Contemporáneo", "Sala A",
-                "Exposición dedicada al arte moderno con obras destacadas de artistas nacionales.", null));
-
-        exposiciones.add(new Exposicion(nextId++, "Renacimiento Italiano", "2024-04-01", "2024-06-01",
-                "Sofía García", "Pintura Renacentista", "Sala B",
-                "Una colección única de obras del Renacimiento italiano.", null));
+            exposiciones.add(new Exposicion(nextId++, "Renacimiento Italiano", "2024-04-01", "2024-06-01",
+                    "Sofía García", "Pintura Renacentista", "Sala B",
+                    "Una colección única de obras del Renacimiento italiano.", "renacimiento-italiano.jpg"));
+        }
     }
 
     @Override
@@ -55,45 +54,39 @@ public class ExposicionesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
+        String titulo = req.getParameter("titulo");
+        String fechaInicio = req.getParameter("fechaInicio");
+        String fechaFin = req.getParameter("fechaFin");
+        String responsable = req.getParameter("responsable");
+        String tematica = req.getParameter("tematica");
+        String salaAsignada = req.getParameter("salaAsignada");
+        String descripcion = req.getParameter("descripcion");
 
-        if ("delete".equals(action)) {
-            // Manejo de eliminación
-            int id = Integer.parseInt(req.getParameter("id"));
-            exposiciones.removeIf(expo -> expo.getId() == id);
-            resp.sendRedirect("exposiciones");
-        } else {
-            // Agregar una nueva exposición
-            String titulo = req.getParameter("titulo");
-            String fechaInicio = req.getParameter("fechaInicio");
-            String fechaFin = req.getParameter("fechaFin");
-            String responsable = req.getParameter("responsable");
-            String tematica = req.getParameter("tematica");
-            String salaAsignada = req.getParameter("salaAsignada");
-            String descripcion = req.getParameter("descripcion");
+        Part imagenPart = req.getPart("imagen");
+        String nombreImagen = guardarImagen(imagenPart);
 
-            // Manejo de imagen
-            Part imagenPart = req.getPart("imagen");
-            String nombreImagen = null;
-            if (imagenPart != null && imagenPart.getSize() > 0) {
-                nombreImagen = Paths.get(imagenPart.getSubmittedFileName()).getFileName().toString();
-                String rutaReal = req.getServletContext().getRealPath("/") + RUTA_IMAGENES;
-                File carpetaImagenes = new File(rutaReal);
+        Exposicion nuevaExposicion = new Exposicion(nextId++, titulo, fechaInicio, fechaFin, responsable,
+                tematica, salaAsignada, descripcion, nombreImagen);
+        exposiciones.add(nuevaExposicion);
+        resp.sendRedirect("exposiciones");
+    }
 
-                if (!carpetaImagenes.exists()) {
-                    carpetaImagenes.mkdirs(); // Crear la carpeta si no existe
-                }
+    private String guardarImagen(Part imagenPart) throws IOException {
+        if (imagenPart != null && imagenPart.getSize() > 0) {
+            String nombreImagen = Paths.get(imagenPart.getSubmittedFileName()).getFileName().toString();
+            String rutaReal = getServletContext().getRealPath("/") + RUTA_IMAGENES;
+            File carpeta = new File(rutaReal);
 
-                File archivoImagen = new File(carpetaImagenes, nombreImagen);
-                try (InputStream input = imagenPart.getInputStream()) {
-                    Files.copy(input, archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                }
+            if (!carpeta.exists()) {
+                carpeta.mkdirs();
             }
 
-            Exposicion nuevaExposicion = new Exposicion(nextId++, titulo, fechaInicio, fechaFin, responsable,
-                    tematica, salaAsignada, descripcion, nombreImagen);
-            exposiciones.add(nuevaExposicion);
-            resp.sendRedirect("exposiciones");
+            File archivoImagen = new File(carpeta, nombreImagen);
+            try (InputStream input = imagenPart.getInputStream()) {
+                Files.copy(input, archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            return nombreImagen;
         }
+        return null;
     }
 }

@@ -77,7 +77,7 @@
                                                             value="<%= exposicion.getId() %>">
                                                         <button type="submit" class="btn-edit">Editar</button>
                                                     </form>
-                                                    <form action="exposiciones" method="post" style="display:inline;">
+                                                    <form action="eliminarExposicion" method="get" style="display:inline;">
                                                         <input type="hidden" name="action" value="delete">
                                                         <input type="hidden" name="id"
                                                             value="<%= exposicion.getId() %>">

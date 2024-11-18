@@ -90,7 +90,7 @@
                                                                 value="<%= coleccionista.getId() %>">
                                                             <button type="submit" class="btn-edit">Editar</button>
                                                         </form>
-                                                        <form action="coleccionistas" method="post"
+                                                        <form action="eliminarColeccionista" method="get"
                                                             style="display:inline;">
                                                             <input type="hidden" name="action" value="delete">
                                                             <input type="hidden" name="id"

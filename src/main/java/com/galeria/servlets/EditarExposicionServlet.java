@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 
 @WebServlet("/editarExposicion")
 @MultipartConfig(
@@ -24,12 +23,15 @@ import java.util.List;
         maxRequestSize = 1024 * 1024 * 50    // 50 MB
 )
 public class EditarExposicionServlet extends HttpServlet {
-    private static final List<Exposicion> exposiciones = ExposicionesServlet.getExposiciones();
+    private static final String RUTA_IMAGENES = "resources/imagenes/exposiciones";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        Exposicion exposicion = exposiciones.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
+        Exposicion exposicion = ExposicionesServlet.getExposiciones().stream()
+                .filter(e -> e.getId() == id)
+                .findFirst()
+                .orElse(null);
 
         if (exposicion != null) {
             req.setAttribute("exposicion", exposicion);
@@ -42,32 +44,49 @@ public class EditarExposicionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        Exposicion exposicion = exposiciones.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
+        Exposicion exposicion = ExposicionesServlet.getExposiciones().stream()
+                .filter(e -> e.getId() == id)
+                .findFirst()
+                .orElse(null);
 
         if (exposicion != null) {
             exposicion.setTitulo(req.getParameter("titulo"));
-            exposicion.setTematica(req.getParameter("tematica"));
             exposicion.setFechaInicio(req.getParameter("fechaInicio"));
             exposicion.setFechaFin(req.getParameter("fechaFin"));
             exposicion.setResponsable(req.getParameter("responsable"));
+            exposicion.setTematica(req.getParameter("tematica"));
             exposicion.setSalaAsignada(req.getParameter("salaAsignada"));
             exposicion.setDescripcion(req.getParameter("descripcion"));
 
             Part imagenPart = req.getPart("imagen");
             if (imagenPart != null && imagenPart.getSize() > 0) {
-                String nombreImagen = Paths.get(imagenPart.getSubmittedFileName()).getFileName().toString();
-                String rutaReal = req.getServletContext().getRealPath("/") + "resources/imagenes/exposiciones";
-                File carpeta = new File(rutaReal);
-                if (!carpeta.exists()) carpeta.mkdirs();
-
-                File archivoImagen = new File(carpeta, nombreImagen);
-                try (InputStream input = imagenPart.getInputStream()) {
-                    Files.copy(input, archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                }
-                exposicion.setImagen(nombreImagen);
+                String nuevaImagen = guardarImagen(imagenPart);
+                exposicion.setImagen(nuevaImagen);
             }
-        }
 
-        resp.sendRedirect("exposiciones");
+            resp.sendRedirect("exposiciones");
+        } else {
+            resp.sendRedirect("exposiciones");
+        }
+    }
+
+    private String guardarImagen(Part imagenPart) throws IOException {
+        if (imagenPart != null && imagenPart.getSize() > 0) {
+            String nombreImagen = Paths.get(imagenPart.getSubmittedFileName()).getFileName().toString();
+            String rutaReal = getServletContext().getRealPath("/") + RUTA_IMAGENES;
+            File carpeta = new File(rutaReal);
+
+            if (!carpeta.exists()) {
+                carpeta.mkdirs();
+            }
+
+            File archivoImagen = new File(carpeta, nombreImagen);
+            try (InputStream input = imagenPart.getInputStream()) {
+                Files.copy(input, archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            return nombreImagen;
+        }
+        return null;
     }
 }
