@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @WebServlet(name = "editarObraServlet", urlPatterns = {"/editarObra"})
 @MultipartConfig(
@@ -26,15 +27,28 @@ public class editarObraServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private List<ObraDeArte> obtenerObras(HttpServletRequest request) {
+        return (List<ObraDeArte>) getServletContext().getAttribute("obras");
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Obtener la lista de obras desde el contexto
+        List<ObraDeArte> obras = obtenerObras(request);
+
+        if (obras == null) {
+            request.setAttribute("error", "La lista de obras no está inicializada.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
 
         // Obtener el ID de la obra a editar
         int id = Integer.parseInt(request.getParameter("id"));
 
         // Buscar la obra correspondiente
-        ObraDeArte obra = ObrasServlet.getObras().stream()
+        ObraDeArte obra = obras.stream()
                 .filter(o -> o.getId() == id)
                 .findFirst()
                 .orElse(null);
@@ -54,11 +68,20 @@ public class editarObraServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Obtener la lista de obras desde el contexto
+        List<ObraDeArte> obras = obtenerObras(request);
+
+        if (obras == null) {
+            request.setAttribute("error", "La lista de obras no está inicializada.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+
         // Obtener el ID de la obra
         int id = Integer.parseInt(request.getParameter("id"));
 
         // Buscar la obra correspondiente
-        ObraDeArte obra = ObrasServlet.getObras().stream()
+        ObraDeArte obra = obras.stream()
                 .filter(o -> o.getId() == id)
                 .findFirst()
                 .orElse(null);
@@ -85,7 +108,7 @@ public class editarObraServlet extends HttpServlet {
 
         if (filePart != null && filePart.getSize() > 0) {
             imagenFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            String uploadPath = getServletContext().getRealPath("") + "resources/imagenes/obras";
+            String uploadPath = getServletContext().getRealPath("/") + "resources/imagenes/obras";
             File uploadDir = new File(uploadPath);
 
             if (!uploadDir.exists()) {

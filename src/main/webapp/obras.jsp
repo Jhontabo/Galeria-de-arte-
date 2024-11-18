@@ -149,11 +149,11 @@
                                                 <button type="submit" class="btn-edit">Editar</button>
                                             </form>
                                             <!-- Botón de eliminar -->
-                                            <form action="obras" method="post" style="display:inline;">
-                                                <input type="hidden" name="action" value="delete">
+                                            <form action="eliminarObra" method="get" style="display:inline;">
                                                 <input type="hidden" name="id" value="<%= obra.getId() %>">
-                                                <button type="submit" class="btn-delete"
-                                                    onclick="return confirm('¿Está seguro de eliminar esta obra?');">Eliminar</button>
+                                                <button type="submit" class="btn-delete" onclick="return confirm('¿Está seguro de eliminar esta obra?');">
+                                                    Eliminar
+                                                </button>
                                             </form>
 
                                         </td>
