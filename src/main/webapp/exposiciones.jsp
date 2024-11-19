@@ -26,6 +26,10 @@
                                 <li><a href="coleccionistas">Coleccionistas</a></li>
                                 <li><a href="ventas">Ventas</a></li>
                                 <li><a href="colecciones">Colecciones</a></li>
+                                <li><a href="perfil.html">Perfil Artistas</a> </li>
+                                <li><a href="tienda.html">Tienda</a></li>
+                                <li><a href="exposicionesActuales.html">Exposiciones Actuales</a></li>
+                                <li><a href="coleccionesActuales.html">Colecciones Actuales</a></li>
                                 <li><a href="contacto.html">Contacto</a></li>
                             </ul>
                         </nav>
@@ -77,7 +81,8 @@
                                                             value="<%= exposicion.getId() %>">
                                                         <button type="submit" class="btn-edit">Editar</button>
                                                     </form>
-                                                    <form action="eliminarExposicion" method="get" style="display:inline;">
+                                                    <form action="eliminarExposicion" method="get"
+                                                        style="display:inline;">
                                                         <input type="hidden" name="action" value="delete">
                                                         <input type="hidden" name="id"
                                                             value="<%= exposicion.getId() %>">

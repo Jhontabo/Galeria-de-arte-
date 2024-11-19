@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exposiciones Actuales</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #343a40;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar ul li a:hover,
+        .navbar ul li a.active {
+            background-color: #ff6f61;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        /* Header */
+        .header {
+            background-color: #495057;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Expositions Section */
+        .expositions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .exposition-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .exposition-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .exposition-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .exposition-item .details {
+            padding: 15px;
+        }
+
+        .exposition-item h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #343a40;
+        }
+
+        .exposition-item p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .exposition-item .dates,
+        .exposition-item .schedule {
+            font-weight: bold;
+            color: #ff6f61;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h2 class="logo">Galería de Arte</h2>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="obras">Obras de Arte</a></li>
+            <li><a href="profesionales">Profesionales</a></li>
+            <li><a href="exposiciones">Exposiciones</a></li>
+            <li><a href="coleccionistas">Coleccionistas</a></li>
+            <li><a href="ventas">Ventas</a></li>
+            <li><a href="colecciones">Colecciones</a></li>
+            <li><a href="perfil.html">Perfil Artistas</a> </li>
+            <li><a href="tienda.html">Tienda</a></li>
+            <li><a href="exposicionesActuales.html" class="active">Exposiciones Actuales</a></li>
+            <li><a href="coleccionesActuales.html">Colecciones Actuales</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Exposiciones Actuales</h1>
+        <p>Descubre las exposiciones de arte activas y planifica tu visita</p>
+    </div>
+
+    <!-- Expositions Section -->
+    <div class="expositions">
+        <!-- Exposition Item -->
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 1">
+            <div class="details">
+                <h3>Exposición: Colores del Alma</h3>
+                <p>Explora las emociones humanas a través de colores vibrantes.</p>
+                <p class="dates">Fecha: 15 Nov - 15 Dic</p>
+                <p class="schedule">Horario: 10:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Exposition Item -->
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 2">
+            <div class="details">
+                <h3>Exposición: Figuras en Movimiento</h3>
+                <p>Una muestra de esculturas dinámicas y expresivas.</p>
+                <p class="dates">Fecha: 20 Nov - 30 Dic</p>
+                <p class="schedule">Horario: 11:00 AM - 7:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Exposition Item -->
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 3">
+            <div class="details">
+                <h3>Exposición: Naturaleza Viva</h3>
+                <p>Una colección de paisajes y retratos inspirados en la naturaleza.</p>
+                <p class="dates">Fecha: 1 Dic - 15 Ene</p>
+                <p class="schedule">Horario: 9:00 AM - 5:00 PM</p>
+            </div>
+        </div>
+
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 1">
+            <div class="details">
+                <h3>Exposición: Colores del Alma</h3>
+                <p>Explora las emociones humanas a través de colores vibrantes.</p>
+                <p class="dates">Fecha: 15 Nov - 15 Dic</p>
+                <p class="schedule">Horario: 10:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Exposition Item -->
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 2">
+            <div class="details">
+                <h3>Exposición: Figuras en Movimiento</h3>
+                <p>Una muestra de esculturas dinámicas y expresivas.</p>
+                <p class="dates">Fecha: 20 Nov - 30 Dic</p>
+                <p class="schedule">Horario: 11:00 AM - 7:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Exposition Item -->
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 3">
+            <div class="details">
+                <h3>Exposición: Naturaleza Viva</h3>
+                <p>Una colección de paisajes y retratos inspirados en la naturaleza.</p>
+                <p class="dates">Fecha: 1 Dic - 15 Ene</p>
+                <p class="schedule">Horario: 9:00 AM - 5:00 PM</p>
+            </div>
+        </div>
+
+
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 1">
+            <div class="details">
+                <h3>Exposición: Colores del Alma</h3>
+                <p>Explora las emociones humanas a través de colores vibrantes.</p>
+                <p class="dates">Fecha: 15 Nov - 15 Dic</p>
+                <p class="schedule">Horario: 10:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Exposition Item -->
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 2">
+            <div class="details">
+                <h3>Exposición: Figuras en Movimiento</h3>
+                <p>Una muestra de esculturas dinámicas y expresivas.</p>
+                <p class="dates">Fecha: 20 Nov - 30 Dic</p>
+                <p class="schedule">Horario: 11:00 AM - 7:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Exposition Item -->
+        <div class="exposition-item">
+            <img src="./resources/imagenes/colecciones/autoretrato.jpg" alt="Exposición 3">
+            <div class="details">
+                <h3>Exposición: Naturaleza Viva</h3>
+                <p>Una colección de paisajes y retratos inspirados en la naturaleza.</p>
+                <p class="dates">Fecha: 1 Dic - 15 Ene</p>
+                <p class="schedule">Horario: 9:00 AM - 5:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Add more items as needed -->
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Galería de Arte. Todos los derechos reservados.</p>
+    </footer>
+</body>
+
+</html>
