@@ -166,9 +166,24 @@
                     <div class="form-group">
                         <label for="imagen">Imagen:</label>
                         <input type="file" id="imagen" name="imagen" accept="image/*">
-                        <img src="resources/imagenes/profesionales/<%= profesional.getImagen() %>"
-                            alt="Imagen de <%= profesional.getNombreCompleto() %>">
+                        <%
+                            String imagenPath = profesional.getImagen();
+                            if (imagenPath != null && !imagenPath.isEmpty()) {
+                        %>
+                            <!-- Mostrar ruta para depuración -->
+                            <p>Ruta generada: resources/imagenes/profesionales/<%= imagenPath %></p>
+
+                            <!-- Mostrar imagen -->
+                            <img src="resources/imagenes/profesionales/<%= imagenPath %>"
+                                 alt="Imagen de <%= profesional.getNombreCompleto() %>"
+                                 onerror="this.onerror=null; this.src='ruta_a_imagen_fallback.jpg';">
+                        <% } else { %>
+                            <p>No hay imagen disponible.</p>
+                        <% } %>
                     </div>
+
+
+
 
                     <button type="submit">Actualizar Profesional</button>
                 </form>

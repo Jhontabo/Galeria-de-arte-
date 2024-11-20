@@ -26,7 +26,11 @@ public class Profesional {
         this.imagen = imagen;
     }
 
-    // Getters y setters
+    public Profesional() {
+        // Constructor vacío
+    }
+
+    // Getters y Setters
     public int getId() {
         return id;
     }

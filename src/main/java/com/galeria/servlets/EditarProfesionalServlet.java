@@ -11,7 +11,6 @@ import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -27,7 +26,15 @@ public class EditarProfesionalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
+        int id;
+        try {
+            id = Integer.parseInt(req.getParameter("id"));
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID inválido.");
+            return;
+        }
+
+        // Buscar el profesional usando el método estático correctamente
         Profesional profesional = ProfesionalesServlet.getProfesionales().stream()
                 .filter(p -> p.getId() == id)
                 .findFirst()
@@ -43,44 +50,64 @@ public class EditarProfesionalServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
+        int id;
+        try {
+            id = Integer.parseInt(req.getParameter("id"));
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID inválido.");
+            return;
+        }
+
         Profesional profesional = ProfesionalesServlet.getProfesionales().stream()
                 .filter(p -> p.getId() == id)
                 .findFirst()
                 .orElse(null);
 
-        if (profesional != null) {
+        if (profesional == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Profesional no encontrado.");
+            return;
+        }
+
+        try {
             // Actualizar datos del profesional
-            profesional.setNombreCompleto(req.getParameter("nombreCompleto"));
-            profesional.setEspecialidad(req.getParameter("especialidad"));
-            profesional.setAniosExperiencia(Integer.parseInt(req.getParameter("aniosExperiencia")));
+            String nombreCompleto = req.getParameter("nombreCompleto");
+            String especialidad = req.getParameter("especialidad");
+            int aniosExperiencia = Integer.parseInt(req.getParameter("aniosExperiencia"));
+
+            profesional.setNombreCompleto(nombreCompleto);
+            profesional.setEspecialidad(especialidad);
+            profesional.setAniosExperiencia(aniosExperiencia);
             profesional.setProyectosPrevios(req.getParameter("proyectosPrevios"));
             profesional.setContacto(req.getParameter("contacto"));
             profesional.setInstitucionEducativa(req.getParameter("institucionEducativa"));
             profesional.setPremios(req.getParameter("premios"));
             profesional.setEstiloPreferido(req.getParameter("estiloPreferido"));
 
-            // Manejo de imagen
+            // Procesar imagen si se subió una nueva
             Part imagenPart = req.getPart("imagen");
             if (imagenPart != null && imagenPart.getSize() > 0) {
                 String nombreImagen = Paths.get(imagenPart.getSubmittedFileName()).getFileName().toString();
-                String rutaReal = req.getServletContext().getRealPath("/") + RUTA_IMAGENES;
-                File carpetaImagenes = new File(rutaReal);
+                String uploadPath = req.getServletContext().getRealPath("/") + RUTA_IMAGENES;
+                File carpetaImagenes = new File(uploadPath);
 
-                if (!carpetaImagenes.exists()) {
-                    carpetaImagenes.mkdirs();
+                // Crear directorio si no existe
+                if (!carpetaImagenes.exists() && !carpetaImagenes.mkdirs()) {
+                    throw new IOException("No se pudo crear el directorio para imágenes.");
                 }
 
+                // Guardar la imagen en el servidor
                 File archivoImagen = new File(carpetaImagenes, nombreImagen);
-                try (InputStream input = imagenPart.getInputStream()) {
-                    Files.copy(input, archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                }
-                profesional.setImagen(nombreImagen); // Actualiza la ruta de la imagen
+                Files.copy(imagenPart.getInputStream(), archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                profesional.setImagen(nombreImagen); // Actualizar la imagen del profesional
             }
 
+            // Redirigir a la lista de profesionales después de editar
             resp.sendRedirect("profesionales");
-        } else {
-            resp.sendRedirect("profesionales");
+
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Años de experiencia inválidos.");
+        } catch (IOException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al procesar la imagen.");
         }
     }
 }
