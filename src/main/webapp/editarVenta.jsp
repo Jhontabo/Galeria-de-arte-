@@ -91,6 +91,15 @@
             cursor: pointer;
         }
 
+        img {
+            max-width: 200px;
+            height: auto;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         @media (max-width: 600px) {
             form {
                 grid-template-columns: 1fr;
@@ -104,7 +113,7 @@
 </head>
 <body>
     <h1>Editar Venta</h1>
-    <form action="editarVenta" method="post">
+    <form action="editarVenta" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<%= venta.getId() %>">
 
         <div>
@@ -161,6 +170,19 @@
         <div>
             <label for="observaciones">Observaciones:</label>
             <textarea id="observaciones" name="observaciones"><%= venta.getObservaciones() %></textarea>
+        </div>
+
+        <div>
+            <label for="imagen">Imagen:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*">
+        </div>
+
+        <div>
+            <% if (venta.getImagen() != null && !venta.getImagen().isEmpty()) { %>
+                <img src="resources/imagenes/ventas/<%= venta.getImagen() %>" alt="Imagen actual de la venta">
+            <% } else { %>
+                <p>No hay imagen asociada.</p>
+            <% } %>
         </div>
 
         <button type="submit">Actualizar Venta</button>

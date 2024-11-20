@@ -10,8 +10,14 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,8 +76,33 @@ public class VentasServlet extends HttpServlet {
         boolean facturaGenerada = req.getParameter("facturaGenerada") != null;
         String observaciones = req.getParameter("observaciones");
 
-        Venta nuevaVenta = new Venta(id, idObra, idCliente, precioVenta, fechaVenta, encargadoVenta, metodoPago, facturaGenerada, observaciones, null);
+        // Procesar la imagen
+        String imagenNombre = null;
+        Part filePart = req.getPart("imagen");
+        if (filePart != null && filePart.getSize() > 0) {
+            imagenNombre = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String uploadPath = getServletContext().getRealPath("/") + "resources/imagenes/ventas";
+
+            // Crear directorio si no existe
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            // Guardar el archivo
+            File file = new File(uploadDir, imagenNombre);
+            try (InputStream input = filePart.getInputStream()) {
+                Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+
+        // Crear nueva venta
+        Venta nuevaVenta = new Venta(id, idObra, idCliente, precioVenta, fechaVenta, encargadoVenta, metodoPago, facturaGenerada, observaciones, imagenNombre);
         ventas.add(nuevaVenta);
+
+        // Actualizar la lista en el contexto y redirigir
+        getServletContext().setAttribute("ventas", ventas);
         resp.sendRedirect("ventas");
     }
+
 }
