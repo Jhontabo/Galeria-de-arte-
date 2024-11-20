@@ -24,11 +24,17 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar .logo {
-            color: #ffffff;
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
+        .logo-img {
+            height: 100px;
+            /* Ajusta la altura del logo */
+            width: auto;
+            /* Mantiene la proporción de la imagen */
+            display: inline-block;
+            /* Asegura que se comporte como un bloque en línea */
+            margin-right: 20px;
+            /* Espaciado a la derecha */
+            vertical-align: middle;
+            /* Centra verticalmente en el navbar */
         }
 
         .navbar ul {
@@ -167,7 +173,9 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <h2 class="logo">Galería de Arte</h2>
+        <a href="index.html" class="logo-img">
+            <img src="./resources/Logo/logo.png" alt="Logo de la Galería" class="logo-img">
+        </a>
         <ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="obras">Obras de Arte</a></li>

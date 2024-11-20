@@ -97,11 +97,17 @@
             z-index: 1000;
         }
 
-        .navbar .logo {
-            color: #ffffff;
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
+        .logo-img {
+            height: 100px;
+            /* Ajusta la altura del logo */
+            width: auto;
+            /* Mantiene la proporción de la imagen */
+            display: inline-block;
+            /* Asegura que se comporte como un bloque en línea */
+            margin-right: 20px;
+            /* Espaciado a la derecha */
+            vertical-align: middle;
+            /* Centra verticalmente en el navbar */
         }
 
         .navbar ul {
@@ -135,13 +141,22 @@
 <body>
 
     <nav class="navbar">
-        <h2 class="logo">Galería de Arte</h2>
+        <a href="index.html" class="logo-img">
+            <img src="./resources/Logo/logo.png" alt="Logo de la Galería" class="logo-img">
+        </a>
         <ul>
+
             <li><a href="index.html">Inicio</a></li>
             <li><a href="obras">Obras de Arte</a></li>
+            <li><a href="profesionales">Profesionales</a></li>
             <li><a href="exposiciones">Exposiciones</a></li>
+            <li><a href="coleccionistas">Coleccionistas</a></li>
+            <li><a href="ventas">Ventas</a></li>
             <li><a href="colecciones">Colecciones</a></li>
-            <li><a href="perfil.html" class="active">Perfil Artistas</a></li>
+            <li><a href="perfil.html" class="active">Perfil Artistas</a> </li>
+            <li><a href="tienda.html">Tienda</a></li>
+            <li><a href="exposicionesActuales.html">Exposiciones Nuevas</a></li>
+            <li><a href="coleccionesActuales.html">Colecciones Nuevas</a></li>
             <li><a href="contacto.html">Contacto</a></li>
         </ul>
     </nav>

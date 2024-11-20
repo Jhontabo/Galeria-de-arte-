@@ -24,12 +24,19 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar .logo {
-            color: #ffffff;
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
+        .logo-img {
+            height: 100px;
+            /* Ajusta la altura del logo */
+            width: auto;
+            /* Mantiene la proporción de la imagen */
+            display: inline-block;
+            /* Asegura que se comporte como un bloque en línea */
+            margin-right: 20px;
+            /* Espaciado a la derecha */
+            vertical-align: middle;
+            /* Centra verticalmente en el navbar */
         }
+
 
         .navbar ul {
             list-style: none;
@@ -134,7 +141,9 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <h2 class="logo">Galería de Arte</h2>
+        <a href="index.html" class="logo-img">
+            <img src="./resources/Logo/logo.png" alt="Logo de la Galería" class="logo-img">
+        </a>
         <ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="obras">Obras de Arte</a></li>
@@ -161,7 +170,7 @@
     <div class="collections">
         <!-- Collection Item -->
         <div class="collection-item">
-            <img src="./resources/collections/collection1.jpg" alt="Colección 1">
+            <img src="./resources/imagenes/coleccionistas/la mona.jpg" alt="Colección 1">
             <div class="details">
                 <h3>Colección: Tesoros del Renacimiento</h3>
                 <p>Obras maestras que representan el esplendor del arte renacentista.</p>
@@ -171,7 +180,7 @@
 
         <!-- Collection Item -->
         <div class="collection-item">
-            <img src="./resources/collections/collection2.jpg" alt="Colección 2">
+            <img src="./resources/imagenes/coleccionistas/la mona.jpg" alt="Colección 2">
             <div class="details">
                 <h3>Colección: Arte Abstracto</h3>
                 <p>Una selección vibrante de obras abstractas modernas.</p>
@@ -181,7 +190,7 @@
 
         <!-- Collection Item -->
         <div class="collection-item">
-            <img src="./resources/collections/collection3.jpg" alt="Colección 3">
+            <img src="./resources/imagenes/coleccionistas/la mona.jpg" alt="Colección 3">
             <div class="details">
                 <h3>Colección: Naturaleza y Paisajes</h3>
                 <p>Paisajes impresionantes y escenas naturales que cautivan.</p>

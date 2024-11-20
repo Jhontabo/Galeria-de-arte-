@@ -20,7 +20,9 @@
                     <body>
                         <div class="container">
                             <nav class="navbar">
-                                <h2 class="logo">Galería de Arte</h2>
+                                <a href="index.html" class="logo-img">
+                                    <img src="./resources/Logo/logo.png" alt="Logo de la Galería" class="logo-img">
+                                </a>
                                 <ul>
                                     <li><a href="index.html">Inicio</a></li>
                                     <li><a href="obras">Obras de Arte</a></li>

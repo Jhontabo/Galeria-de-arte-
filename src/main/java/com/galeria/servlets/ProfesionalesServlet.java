@@ -16,10 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/profesionales")
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2, // 2 MB
-        maxFileSize = 1024 * 1024 * 10,      // 10 MB
-        maxRequestSize = 1024 * 1024 * 50    // 50 MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 50 // 50 MB
 )
 public class ProfesionalesServlet extends HttpServlet {
     private static final List<Profesional> profesionales = new ArrayList<>();
@@ -27,7 +26,8 @@ public class ProfesionalesServlet extends HttpServlet {
 
     /**
      * Método para obtener la lista de profesionales.
-     * Este método es estático para permitir su acceso desde otros servlets o clases.
+     * Este método es estático para permitir su acceso desde otros servlets o
+     * clases.
      */
     public static List<Profesional> getProfesionales() {
         return profesionales;
@@ -56,7 +56,8 @@ public class ProfesionalesServlet extends HttpServlet {
             try {
                 agregarProfesional(req, resp);
             } catch (Exception e) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error al agregar el profesional: " + e.getMessage());
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Error al agregar el profesional: " + e.getMessage());
                 e.printStackTrace();
             }
         } else {
@@ -64,7 +65,8 @@ public class ProfesionalesServlet extends HttpServlet {
         }
     }
 
-    private void agregarProfesional(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    private void agregarProfesional(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException, ServletException {
         String nombreCompleto = req.getParameter("nombreCompleto");
         String especialidad = req.getParameter("especialidad");
         String proyectosPrevios = req.getParameter("proyectosPrevios");
